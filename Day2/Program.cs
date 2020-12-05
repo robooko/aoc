@@ -13,8 +13,8 @@ namespace Day2
         {
             var stopwatch = new Stopwatch();
             string[] allLines = File.ReadAllLines("textfile1.txt");
-            long fitRange = 0;
-            long matchOnePosition = 0;
+            int fitsRangeCount = 0;
+            int matchOnePositionCount = 0;
 
             stopwatch.Start();
 
@@ -23,15 +23,15 @@ namespace Day2
                 var split = line.Split(':');
                 var rule = new PasswordRule(split[0]);
                 var password = split[1];
-                fitRange = rule.FitsRange(password) ? fitRange + 1 : fitRange;
-                matchOnePosition = rule.MatchesOnePosition(password) ? matchOnePosition + 1 : matchOnePosition;
+                fitsRangeCount += rule.FitsRange(password) ? 1: 0;
+                matchOnePositionCount += rule.MatchesOnePosition(password) ? 1 : 0;
             }
 
             stopwatch.Stop();
 
             Console.WriteLine($"Ran in {stopwatch.ElapsedMilliseconds}.");
-            Console.WriteLine($"{fitRange} passwords fit the range");
-            Console.WriteLine($"{matchOnePosition} passwords match one position");
+            Console.WriteLine($"{fitsRangeCount} passwords fit the range");
+            Console.WriteLine($"{matchOnePositionCount} passwords match one position");
         }
 
     }
