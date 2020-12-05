@@ -20,7 +20,7 @@ namespace Day4
             foreach (var strPassport in passports)
             {
                 var passport = new Passport(strPassport);
-                totalValidPassports += passport.IsRequiredFields() ? 1 : 0;
+                totalValidPassports += passport.HasRequiredFields() ? 1 : 0;
                 totalValidPassportsWithData += passport.IsValid() ? 1 : 0;
             }
 
@@ -40,7 +40,9 @@ namespace Day4
             { "ecl" , "^(amb)|(blu)|(brn)|(gry)|(grn)|(hzl)|(oth)$" }, 
             { "pid" , "^([0-9]{9})$" } 
         };
+
         public Dictionary<string, string> _fields;
+
         public Passport(string strPassport)
         {
             strPassport = strPassport.Replace(Environment.NewLine, ",")
@@ -52,7 +54,7 @@ namespace Day4
                 .ToDictionary(x => x[0], x => x[1]);
         }
 
-        internal bool IsRequiredFields()
+        internal bool HasRequiredFields()
         {
             return _requiredFields.Select(x => _fields.ContainsKey(x.Key))
                 .All(x => x);
