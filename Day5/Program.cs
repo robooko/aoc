@@ -43,51 +43,23 @@ namespace Day5
     class Seat
     {
         string _seatCode;
-        PositionCalculator _row;
-        PositionCalculator _column;
         public Seat(string seatCode)
         {
             _seatCode = seatCode;
-            _row = new PositionCalculator(127, _seatCode.Take(_seatCode.Length - 3));
-            _column = new PositionCalculator(7, _seatCode.TakeLast(3));
         }
 
         public int GetSeatNumber()
         {
-            var row = _row.GetPosition();
-            var column = _column.GetPosition();
+            var sRow = string.Join("", _seatCode.Take(_seatCode.Length - 3))
+                .Replace("B", "1")
+                .Replace("F", "0");
+            var row = Convert.ToInt32(sRow, 2);
+            var sCol = string.Join("", _seatCode.TakeLast(3))
+                .Replace("R", "1")
+                .Replace("L", "0");
+            var column = Convert.ToInt32(sCol, 2);
+
             return row * 8 + column;
         }
-    }
-
-    class PositionCalculator
-    {
-        char[] _up = new char[] { 'L', 'F' };
-        char[] _down = new char[] { 'R', 'B' };
-        int _min = 0;
-        int _max;
-        char[] _codes;
-
-        public PositionCalculator(int max, IEnumerable<char> codes)
-        {
-            _max = max;
-            _codes = codes.ToArray();
-        }
-
-        public int GetPosition()
-        {
-            var count = _max + 1;
-            var min = _min;
-            var max = _max;
-            foreach (var code in _codes)
-            {
-                count = count / 2;
-                max = _up.Contains(code) ? max - count : max;
-                min = _down.Contains(code) ? min + count : min;
-            }
-
-            return max;
-        }
-
     }
 }
