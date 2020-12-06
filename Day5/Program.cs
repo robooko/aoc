@@ -20,7 +20,7 @@ namespace Day5
             Console.WriteLine($"Min seat number is { seatNumbers.Min() }.");
             var missing = Enumerable.Range(seatNumbers.Min(), seatNumbers.Max() - seatNumbers.Min()).Except(seatNumbers);
             Console.WriteLine($"Your seat is { String.Join("\n", missing) }.");
-            Console.WriteLine($"{ String.Join("\n", seatNumbers) }.");
+            // Console.WriteLine($"{ String.Join("\n", seatNumbers) }.");
         }
     }
 
@@ -69,7 +69,7 @@ namespace Day5
                 rowMin = rowCode == 'B' ? rowMin + options : rowMin;
             }
 
-            return rowMax;
+            return (rowMax + rowMin) / 2;
         }
 
         int getColumn()
@@ -81,8 +81,8 @@ namespace Day5
             foreach (var columnCode in columnCodes)
             {
                 options = options / 2;
-                columnMax = columnCode == 'R' ? columnMax - options : columnMax;
-                columnMin = columnCode == 'L' ? columnMin + options : columnMin;
+                columnMax = columnCode == 'L' ? columnMax - options : columnMax;
+                columnMin = columnCode == 'R' ? columnMin + options : columnMin;
             }
 
             return columnMax;
