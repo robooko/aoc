@@ -13,14 +13,13 @@ namespace Day5
 
             var seats = new Seats(allLines);
 
-            var seatNumbers = seats.SeatNumbers.ToList();
-            seatNumbers.Sort();
+            var seatNumbers = seats.SeatNumbers;
 
             Console.WriteLine($"Max seat number is { seatNumbers.Max() }.");
             Console.WriteLine($"Min seat number is { seatNumbers.Min() }.");
+
             var missing = Enumerable.Range(seatNumbers.Min(), seatNumbers.Max() - seatNumbers.Min()).Except(seatNumbers);
             Console.WriteLine($"Your seat is { String.Join("\n", missing) }.");
-            // Console.WriteLine($"{ String.Join("\n", seatNumbers) }.");
         }
     }
 
@@ -44,48 +43,50 @@ namespace Day5
     class Seat
     {
         string _seatCode;
+        PositionCalculator _row;
+        PositionCalculator _column;
         public Seat(string seatCode)
         {
             _seatCode = seatCode;
+            _row = new PositionCalculator(127, _seatCode.Take(_seatCode.Length - 3));
+            _column = new PositionCalculator(7, _seatCode.TakeLast(3));
         }
 
         public int GetSeatNumber()
         {
-            var row = getRow();
-            var column = getColumn();
+            var row = _row.GetPosition();
+            var column = _column.GetPosition();
             return row * 8 + column;
         }
+    }
 
-        int getRow()
+    class PositionCalculator
+    {
+        char[] _up = new char[] { 'L', 'F' };
+        char[] _down = new char[] { 'R', 'B' };
+        int _min = 0;
+        int _max;
+        char[] _codes;
+
+        public PositionCalculator(int max, IEnumerable<char> codes)
         {
-            var rowCodes = _seatCode.Take(_seatCode.Length - 3);
-            var rowMax = 127;
-            var rowMin = 0;
-            var options = 128;
-            foreach(var rowCode in rowCodes)
-            {
-                options = options / 2;
-                rowMax = rowCode == 'F' ? rowMax - options : rowMax;
-                rowMin = rowCode == 'B' ? rowMin + options : rowMin;
-            }
-
-            return (rowMax + rowMin) / 2;
+            _max = max;
+            _codes = codes.ToArray();
         }
 
-        int getColumn()
+        public int GetPosition()
         {
-            var columnCodes = _seatCode.TakeLast(3);
-            var columnMax = 7;
-            var columnMin = 0;
-            var options = 8;
-            foreach (var columnCode in columnCodes)
+            var count = _max + 1;
+            var min = _min;
+            var max = _max;
+            foreach (var code in _codes)
             {
-                options = options / 2;
-                columnMax = columnCode == 'L' ? columnMax - options : columnMax;
-                columnMin = columnCode == 'R' ? columnMin + options : columnMin;
+                count = count / 2;
+                max = _up.Contains(code) ? max - count : max;
+                min = _down.Contains(code) ? min + count : min;
             }
 
-            return columnMax;
+            return max;
         }
 
     }
