@@ -11,8 +11,8 @@ namespace Day6
         {
             string allText = File.ReadAllText("textfile1.txt");
             var groups = new Groups(allText);
-            Console.WriteLine($"Total is {groups.GetTotal()}.");
-            Console.WriteLine($"Total fix is {groups.GetTotal1()}.");
+            Console.WriteLine($"Total is {groups.GetDistictTotal()}.");
+            Console.WriteLine($"Total fix is {groups.GetDistictTotalByPerson()}.");
         }
     }
 
@@ -22,19 +22,18 @@ namespace Day6
         IEnumerable<Group> _groups;
         public Groups(string data)
         {
-            _groups = data.Split(new string[] { Environment.NewLine + Environment.NewLine },
-                               StringSplitOptions.RemoveEmptyEntries)
+            _groups = data.Split(new string[] { Environment.NewLine + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => new Group(x));
         }
 
-        public int GetTotal()
+        public int GetDistictTotal()
         {
-            return _groups.Sum(x => x.GetTotal());
+            return _groups.Sum(x => x.GetDistictTotal());
         }
 
-        public int GetTotal1()
+        public int GetDistictTotalByPerson()
         {
-            return _groups.Sum(x => x.GetTotal1());
+            return _groups.Sum(x => x.GetDistictTotalByPerson());
         }
 
     }
@@ -44,17 +43,17 @@ namespace Day6
         IEnumerable<Person> _people;
         public Group(string data) 
         {
-            _people = data.Split(new string[] { Environment.NewLine},
-                               StringSplitOptions.RemoveEmptyEntries)
+            _people = data.Split(new string[] { Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => new Person(x));
         }
 
-        internal int GetTotal()
+        internal int GetDistictTotal()
         {
-            return String.Join(string.Empty, _people.Select(x => x.Answers)).ToCharArray().Distinct().Count();
+            var joinedAnswers = String.Join(string.Empty, _people.Select(x => x.Answers));
+            return joinedAnswers.ToCharArray().Distinct().Count();
         }
 
-        internal int GetTotal1()
+        internal int GetDistictTotalByPerson()
         {
             var result = _people.First().Answers.ToCharArray();
             foreach (var answers in _people.Select(x => x.Answers))
