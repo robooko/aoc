@@ -56,10 +56,8 @@ namespace Day6
 
         internal int GetTotal1()
         {
-            var result = new Char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-            var sortedAnswers = _people.Select(x => x.Answers).ToList();
-            sortedAnswers.Sort((x, y) => x.Length.CompareTo(y.Length));
-            foreach (var answers in sortedAnswers)
+            var result = _people.First().Answers.ToCharArray();
+            foreach (var answers in _people.Select(x => x.Answers))
             {
                 result = result.Intersect(answers).ToArray();
             }
