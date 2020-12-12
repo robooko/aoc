@@ -18,7 +18,7 @@ namespace Day7
 
     class Bags
     {
-        Collection<Bag> _allBags { get; set; }
+        Collection<Bag> _allBags;
 
         public Bags(string[] data)
         {
@@ -55,8 +55,8 @@ namespace Day7
 
     class Bag
     {
-        string _bagName { get; init; }
-        string[] _bags { get; init; }
+        string _bagName;
+        string[] _bags;
         Bag[] _bagArray;
 
         public Bag(string data)
